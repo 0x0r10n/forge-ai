@@ -4,7 +4,7 @@
 
 ## Forge better code. Faster.
 
-**The open-source multi-agent coding agent that beats Cursor and Claude Code on price and control.**
+**Open-source multi-agent coding agent for the terminal. Built for speed, cost-efficiency, and operator control with DeepSeek models.**
 
 [![npm version](https://img.shields.io/npm/v/forge-ai?color=cyan&label=forge-ai)](https://www.npmjs.com/package/forge-ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -15,20 +15,33 @@
 
 ---
 
-## Why Forge AI
+## What Forge AI Is
+
+Forge AI is a terminal-first coding agent with a built-in multi-agent workflow:
+
+- **Architect** plans the change.
+- **Coder** implements and runs checks.
+- **Reviewer** validates for quality and correctness.
+
+It also includes local semantic code search (TF-IDF), persistent project memory, checkpoint/rollback, and quality gates for safer iteration.
+
+---
+
+## Capability Snapshot
 
 | Capability | Forge AI | Cursor Composer 2.5 | Claude Code |
 |---|:---:|:---:|:---:|
-| Multi-agent pipeline (Architect → Coder → Reviewer) | ✅ | ⚠️ Partial | ❌ |
+| Multi-agent pipeline (Architect → Coder → Reviewer) | ✅ | ⚠️ Varies by workflow | ❌ |
 | Local semantic search (TF-IDF RAG) | ✅ | ✅ | ❌ |
-| Persistent project memory | ✅ | ❌ | ✅ |
+| Project memory (local) | ✅ | ⚠️ Limited | ✅ |
 | Checkpoint and rollback | ✅ | ❌ | ❌ |
-| Smart git commit flow | ✅ | ⚠️ Basic | ✅ |
-| Self-hostable OSS core | ✅ | ❌ | ❌ |
-| Token-centric usage telemetry | ✅ | ⚠️ Limited | ⚠️ Limited |
-| Control over model routing | ✅ | ⚠️ Limited | ❌ |
+| Terminal-native workflow | ✅ | ⚠️ Hybrid | ✅ |
+| Open-source core | ✅ | ❌ | ❌ |
+| Model routing controls | ✅ | ⚠️ Limited | ⚠️ Limited |
 
-Forge AI is built for engineers who want agency, deterministic workflows, and lower operating cost without sacrificing capability.
+Notes:
+- Table reflects current Forge AI features in this repository.
+- Competitor columns are a practical high-level snapshot and may evolve over time.
 
 ---
 
@@ -48,14 +61,14 @@ bun add -g forge-ai
 # one-time setup
 forge setup
 
-# launch interactive mode
+# interactive mode
 forge
 
-# launch with an initial task
+# start with a task
 forge "add JWT authentication to my Express app"
 ```
 
-### Verify setup
+Verify setup:
 
 ```bash
 forge doctor
@@ -63,14 +76,14 @@ forge doctor
 
 ---
 
-## Core Commands
+## CLI Commands
 
 | Command | Description |
 |---|---|
 | `forge setup` | Configure API key and defaults |
-| `forge config` | Show/update configuration |
-| `forge models` | List available models and pricing |
-| `forge doctor` | Validate local setup and dependencies |
+| `forge config` | View/update configuration |
+| `forge models` | Show available model options |
+| `forge doctor` | Run environment and dependency checks |
 | `forge update` | Update global install |
 
 ---
@@ -79,38 +92,39 @@ forge doctor
 
 | Command | Description |
 |---|---|
-| `/multi <task>` | Full Architect → Coder → Reviewer pipeline |
-| `/oneshot <task>` | CI-friendly pipeline run and exit code |
-| `/think <question>` | Force deep reasoning mode |
-| `/checkpoint [label]` | Snapshot files for rollback |
-| `/commit [hint]` | Smart conventional commit |
-| `/memory [query]` | Recall project memory |
+| `/multi <task>` | Run Architect → Coder → Reviewer pipeline |
+| `/oneshot <task>` | Run pipeline and exit with CI-friendly status |
+| `/think <question>` | Force deeper reasoning model |
+| `/checkpoint [label]` | Snapshot project files |
+| `/commit [hint]` | Generate smart conventional commit |
+| `/memory [query]` | Recall saved project memory |
 | `/reindex` | Rebuild semantic index |
 | `/report [days]` | Usage report |
 | `/status` | Session status |
 | `/ship` | Run production quality gate |
 | `/cost` | Quick token usage display |
 | `/clear` | Clear session history |
-| `/help` | Show command palette |
+| `/help` | Show command list |
 
 ---
 
-## Multi-Agent Flow
+## Quality Gate
 
-```text
-/multi <task>
-  ├─ Analysis (complexity, risks, model routing)
-  ├─ Architect (implementation plan)
-  ├─ Coder (edits + test/lint execution)
-  ├─ Reviewer (validation and verdict)
-  └─ Sanity pass + summary
-```
+Forge AI includes a built-in ship gate (`/ship`) that checks local release readiness:
+
+- git cleanliness (when in a git repo)
+- typecheck (if script exists)
+- lint (if script exists)
+- tests (if script exists)
+- build (if script exists)
+
+This is designed to reduce “looks good but fails in CI” outcomes.
 
 ---
 
 ## Configuration
 
-Config path:
+Config location:
 
 ```text
 ~/.forge/config.json
@@ -131,11 +145,29 @@ Example:
 
 ---
 
+## Current Scope and Limits
+
+What is production-usable now:
+
+- terminal workflow and slash command surface
+- multi-agent orchestration
+- local TF-IDF semantic search
+- memory/checkpoint storage under `~/.forge`
+- packaging as `forge-ai` with `forge` binary
+
+Known limits:
+
+- no MCP integration yet
+- no native web retrieval tool by default
+- benchmark/comparison claims are not a formal public benchmark suite
+
+---
+
 ## Development
 
 ```bash
-git clone https://github.com/forge-ai/forge
-cd forge
+git clone git@github.com:0x0r10n/forge-ai.git
+cd forge-ai
 bun install
 bun run typecheck
 bun run build

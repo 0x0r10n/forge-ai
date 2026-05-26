@@ -1,10 +1,10 @@
 {
-  "name": "forge-ai",
+  "name": "@0x0r10n/forge-ai",
   "version": "1.0.0",
   "description": "Forge is a powerful open-source multi-agent coding agent for the terminal. Built for speed, cost-efficiency, and full control using DeepSeek models.",
   "type": "module",
   "bin": {
-    "forge": "./dist/forge.js"
+    "forge": "dist/forge.js"
   },
   "files": [
     "dist/forge.js",
@@ -40,7 +40,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/forge-ai/forge.git"
+    "url": "git+https://github.com/forge-ai/forge.git"
   },
   "homepage": "https://github.com/forge-ai/forge#readme",
   "bugs": {
