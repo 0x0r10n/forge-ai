@@ -1,0 +1,21 @@
+# Bun configuration for Forge
+# https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Use exact versions to ensure reproducible installs
+exact = false
+# Prefer the local registry cache
+cache = true
+
+[install.scopes]
+# Scoped package registry overrides (add if needed)
+# "@myorg" = { token = "$MY_ORG_TOKEN", url = "https://npm.myorg.com/" }
+
+[run]
+# Automatically set bun as the runtime for scripts
+bun = true
+
+[test]
+# Test configuration
+timeout = 30000
+smol = false

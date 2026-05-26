@@ -1,0 +1,47 @@
+# ── Dependencies ──────────────────────────────────────────────────────────────
+node_modules/
+bun.lockb
+
+# ── Build output ──────────────────────────────────────────────────────────────
+dist/
+out/
+*.tgz
+*.js.map
+
+# ── TypeScript ────────────────────────────────────────────────────────────────
+*.tsbuildinfo
+
+# ── Test & coverage ───────────────────────────────────────────────────────────
+coverage/
+*.lcov
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+bun-debug.log*
+
+# ── Environment ───────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Caches ────────────────────────────────────────────────────────────────────
+.cache/
+.eslintcache
+.turbo/
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── DeepCode runtime data (contains API key & indexes) ───────────────────────
+# NOTE: ~/.deepcode/ lives in the home dir, not the project root.
+# This entry guards against accidentally committing a local .deepcode folder.
+.deepcode/

@@ -1,0 +1,121 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+  id-token: write  # for npm provenance
+
+jobs:
+  # ── Type-check & build ──────────────────────────────────────────────────────
+  build:
+    name: Build & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Type check
+        run: bun run typecheck
+
+      - name: Build
+        run: bun run build
+
+      - name: Smoke test
+        run: |
+          node dist/deepcode.js --version
+          node dist/deepcode.js --help
+          node dist/deepcode.js models
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deepcode-dist
+          path: dist/deepcode.js
+          retention-days: 1
+
+  # ── Create GitHub Release ───────────────────────────────────────────────────
+  github-release:
+    name: GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deepcode-dist
+          path: dist/
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Extract changelog section
+        id: changelog
+        run: |
+          # Pull the section for this version out of CHANGELOG.md
+          awk "/^## \[${{ steps.version.outputs.VERSION }}\]/,/^## \[/" CHANGELOG.md \
+            | head -n -1 \
+            > release_notes.md
+          cat release_notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: DeepCode v${{ steps.version.outputs.VERSION }}
+          body_path: release_notes.md
+          files: dist/deepcode.js
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
+
+  # ── Publish to npm ──────────────────────────────────────────────────────────
+  npm-publish:
+    name: Publish to npm
+    needs: build
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node (for npm publish)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deepcode-dist
+          path: dist/
+
+      - name: Make binary executable
+        run: chmod +x dist/deepcode.js
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
