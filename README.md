@@ -6,7 +6,7 @@
 
 **Open-source multi-agent coding agent for the terminal. Built for speed, cost-efficiency, and operator control with DeepSeek models.**
 
-[![npm version](https://img.shields.io/npm/v/forge-ai?color=cyan&label=forge-ai)](https://www.npmjs.com/package/forge-ai)
+[![npm version](https://img.shields.io/npm/v/@0x0r10n/forge-ai?color=cyan&label=@0x0r10n/forge-ai)](https://www.npmjs.com/package/@0x0r10n/forge-ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Bun](https://img.shields.io/badge/runtime-Bun-orange)](https://bun.sh)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)](https://www.typescriptlang.org/)
@@ -48,9 +48,9 @@ Notes:
 ## Install
 
 ```bash
-npm install -g forge-ai
+npm install -g @0x0r10n/forge-ai
 # or
-bun add -g forge-ai
+bun add -g @0x0r10n/forge-ai
 ```
 
 ---
@@ -153,7 +153,7 @@ What is production-usable now:
 - multi-agent orchestration
 - local TF-IDF semantic search
 - memory/checkpoint storage under `~/.forge`
-- packaging as `forge-ai` with `forge` binary
+- packaging as `@0x0r10n/forge-ai` with `forge` binary
 
 Known limits:
 

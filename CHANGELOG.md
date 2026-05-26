@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Full project identity rebrand to **Forge AI**.
 - CLI command standardized as `forge`.
-- NPM package name standardized as `forge-ai`.
+- NPM package name standardized as `@0x0r10n/forge-ai`.
 - Distribution artifact standardized as `dist/forge.js`.
 - Config/runtime storage namespace standardized as `~/.forge`.
 - Documentation and in-product copy aligned to Forge AI branding.
